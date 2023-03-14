@@ -1,5 +1,4 @@
-# NNforFreqSevPricing
-Neural networks for insurance pricing with frequency and severity data
+# Neural networks for insurance pricing with frequency and severity data
 
 This repository accompanies the paper: Neural networks for insurance pricing with frequency and severity data: a benchmark study from data preprocessing steps to technical tariff
 
