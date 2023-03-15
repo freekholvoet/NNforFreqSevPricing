@@ -329,68 +329,72 @@ save(CA_NN_AUS, file = 'CA_NN_AUS')
 # CANN models with GLM input
 NC_CANN_GLM_fixed_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_AUS_GLM[[fold]], 
-                                        flags_list = AUS_NC_CANN_GLM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_NC_CANN_GLM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_fixed_AUS, file = 'NC_CANN_GLM_fixed_AUS')
 NC_CANN_GLM_flex_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_AUS_GLM[[fold]], 
-                                        flags_list = AUS_NC_CANN_GLM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_NC_CANN_GLM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_flex_AUS, file = 'NC_CANN_GLM_flex_AUS')
 CA_CANN_GLM_fixed_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_AUS_GLM[[fold]], 
-                                        flags_list = AUS_CA_CANN_GLM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_CA_CANN_GLM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_fixed_AUS, file = 'CA_CANN_GLM_fixed_AUS')
 CA_CANN_GLM_flex_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_AUS_GLM[[fold]], 
-                                        flags_list = AUS_CA_CANN_GLM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_CA_CANN_GLM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_flex_AUS, file = 'CA_CANN_GLM_flex_AUS')
 
 # CANN models with GBM input
 NC_CANN_GBM_fixed_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_AUS_GBM[[fold]], 
-                                        flags_list = AUS_NC_CANN_GBM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_NC_CANN_GBM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_fixed_AUS, file = 'NC_CANN_GBM_fixed_AUS')
 NC_CANN_GBM_flex_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_AUS_GBM[[fold]], 
-                                        flags_list = AUS_NC_CANN_GBM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_NC_CANN_GBM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_flex_AUS, file = 'NC_CANN_GBM_flex_AUS')
 CA_CANN_GBM_fixed_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_AUS_GBM[[fold]], 
-                                        flags_list = AUS_CA_CANN_GBM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_CA_CANN_GBM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_fixed_AUS, file = 'CA_CANN_GBM_fixed_AUS')
 CA_CANN_GBM_flex_AUS <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_AUS_GBM[[fold]], 
-                                        flags_list = AUS_CA_CANN_GBM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_AUS[[fold]],
-                                        cat_vars = cat_AUS)$val_loss}) %>% mean
+                                             flags_list = AUS_CA_CANN_GBM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_AUS[[fold]],
+                                             cat_vars = cat_AUS, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_flex_AUS, file = 'CA_CANN_GBM_flex_AUS')
 
@@ -427,10 +431,10 @@ save(oos_all_NN_AUS, file = "oos_all_NN_AUS")
 # Regular neural networks
 NC_NN_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_run_AE(fold_data = NC_data_BE[[fold]], 
-                             flags_list = BE_NC_NN[[fold]], 
-                             random_val_split = 0.2,
-                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                             cat_vars = cat_BE)$val_loss}) %>% mean
+                                        flags_list = BE_NC_NN[[fold]], 
+                                        random_val_split = 0.2,
+                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                        cat_vars = cat_BE)$val_loss}) %>% mean
 })
 save(NC_NN_BE, file = 'NC_NN_BE')
 CA_NN_BE <- sapply(1:6, function(fold){
@@ -445,74 +449,78 @@ save(CA_NN_BE, file = 'CA_NN_BE')
 # CANN models with GLM input
 NC_CANN_GLM_fixed_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_BE_GLM[[fold]], 
-                                        flags_list = BE_NC_CANN_GLM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_NC_CANN_GLM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_fixed_BE, file = 'NC_CANN_GLM_fixed_BE')
 
 NC_CANN_GLM_flex_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_BE_GLM[[fold]], 
-                                        flags_list = BE_NC_CANN_GLM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_NC_CANN_GLM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_flex_BE, file = 'NC_CANN_GLM_flex_BE')
 
 CA_CANN_GLM_fixed_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_BE_GLM[[fold]], 
-                                        flags_list = BE_CA_CANN_GLM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_CA_CANN_GLM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_fixed_BE, file = 'CA_CANN_GLM_fixed_BE')
 
 CA_CANN_GLM_flex_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_BE_GLM[[fold]], 
-                                        flags_list = BE_CA_CANN_GLM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_CA_CANN_GLM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_flex_BE, file = 'CA_CANN_GLM_flex_BE')
 
 # CANN models with GBM input
 NC_CANN_GBM_fixed_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_BE_GBM[[fold]], 
-                                        flags_list = BE_NC_CANN_GBM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_NC_CANN_GBM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_fixed_BE, file = 'NC_CANN_GBM_fixed_BE')
 
 NC_CANN_GBM_flex_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = NC_data_BE_GBM[[fold]], 
-                                        flags_list = BE_NC_CANN_GBM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_NC_CANN_GBM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_flex_BE, file = 'NC_CANN_GBM_flex_BE')
 
 CA_CANN_GBM_fixed_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_BE_GBM[[fold]], 
-                                        flags_list = BE_CA_CANN_GBM_fixed[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_CA_CANN_GBM_fixed[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_fixed_BE, file = 'CA_CANN_GBM_fixed_BE')
 
 CA_CANN_GBM_flex_BE <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_BE_GBM[[fold]], 
-                                        flags_list = BE_CA_CANN_GBM_flex[[fold]], 
-                                        random_val_split = 0.2,
-                                        autoencoder_trained = AE_weights_scaled_BE[[fold]],
-                                        cat_vars = cat_BE)$val_loss}) %>% mean
+                                             flags_list = BE_CA_CANN_GBM_flex[[fold]], 
+                                             random_val_split = 0.2,
+                                             autoencoder_trained = AE_weights_scaled_BE[[fold]],
+                                             cat_vars = cat_BE, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_flex_BE, file = 'CA_CANN_GBM_flex_BE')
 
@@ -578,7 +586,8 @@ NC_CANN_GLM_flex_FR <- sapply(1:6, function(fold){
                                              flags_list = FR_NC_CANN_GLM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_FR[[fold]],
-                                             cat_vars = cat_FR)$val_loss}) %>% mean
+                                             cat_vars = cat_FR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_flex_FR, file = 'NC_CANN_GLM_flex_FR')
 CA_CANN_GLM_fixed_FR <- sapply(1:6, function(fold){
@@ -594,7 +603,8 @@ CA_CANN_GLM_flex_FR <- sapply(1:6, function(fold){
                                              flags_list = FR_CA_CANN_GLM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_FR[[fold]],
-                                             cat_vars = cat_FR)$val_loss}) %>% mean
+                                             cat_vars = cat_FR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_flex_FR, file = 'CA_CANN_GLM_flex_FR')
 
@@ -612,7 +622,8 @@ NC_CANN_GBM_flex_FR <- sapply(1:6, function(fold){
                                              flags_list = FR_NC_CANN_GBM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_FR[[fold]],
-                                             cat_vars = cat_FR)$val_loss}) %>% mean
+                                             cat_vars = cat_FR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_flex_FR, file = 'NC_CANN_GBM_flex_FR')
 CA_CANN_GBM_fixed_FR <- sapply(1:6, function(fold){
@@ -628,7 +639,8 @@ CA_CANN_GBM_flex_FR <- sapply(1:6, function(fold){
                                              flags_list = FR_CA_CANN_GBM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_FR[[fold]],
-                                             cat_vars = cat_FR)$val_loss}) %>% mean
+                                             cat_vars = cat_FR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_flex_FR, file = 'CA_CANN_GBM_flex_FR')
 
@@ -694,9 +706,11 @@ NC_CANN_GLM_flex_NOR <- sapply(1:6, function(fold){
                                              flags_list = NOR_NC_CANN_GLM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_NOR[[fold]],
-                                             cat_vars = cat_NOR)$val_loss}) %>% mean
+                                             cat_vars = cat_NOR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GLM_flex_NOR, file = 'NC_CANN_GLM_flex_NOR')
+
 CA_CANN_GLM_fixed_NOR <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_NOR_GLM[[fold]], 
                                              flags_list = NOR_CA_CANN_GLM_fixed[[fold]], 
@@ -705,12 +719,14 @@ CA_CANN_GLM_fixed_NOR <- sapply(1:6, function(fold){
                                              cat_vars = cat_NOR)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_fixed_NOR, file = 'CA_CANN_GLM_fixed_NOR')
+
 CA_CANN_GLM_flex_NOR <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_NOR_GLM[[fold]], 
                                              flags_list = NOR_CA_CANN_GLM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_NOR[[fold]],
-                                             cat_vars = cat_NOR)$val_loss}) %>% mean
+                                             cat_vars = cat_NOR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GLM_flex_NOR, file = 'CA_CANN_GLM_flex_NOR')
 
@@ -728,9 +744,11 @@ NC_CANN_GBM_flex_NOR <- sapply(1:6, function(fold){
                                              flags_list = NOR_NC_CANN_GBM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_NOR[[fold]],
-                                             cat_vars = cat_NOR)$val_loss}) %>% mean
+                                             cat_vars = cat_NOR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(NC_CANN_GBM_flex_NOR, file = 'NC_CANN_GBM_flex_NOR')
+
 CA_CANN_GBM_fixed_NOR <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_NOR_GBM[[fold]], 
                                              flags_list = NOR_CA_CANN_GBM_fixed[[fold]], 
@@ -739,12 +757,14 @@ CA_CANN_GBM_fixed_NOR <- sapply(1:6, function(fold){
                                              cat_vars = cat_NOR)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_fixed_NOR, file = 'CA_CANN_GBM_fixed_NOR')
+
 CA_CANN_GBM_flex_NOR <- sapply(1:6, function(fold){
   sapply(1:3, function(x){single_CANN_run_AE(fold_data = CA_data_NOR_GBM[[fold]], 
                                              flags_list = NOR_CA_CANN_GBM_flex[[fold]], 
                                              random_val_split = 0.2,
                                              autoencoder_trained = AE_weights_scaled_NOR[[fold]],
-                                             cat_vars = cat_NOR)$val_loss}) %>% mean
+                                             cat_vars = cat_NOR, 
+                                             trainable_output = TRUE)$val_loss}) %>% mean
 })
 save(CA_CANN_GBM_flex_NOR, file = 'CA_CANN_GBM_flex_NOR')
 
@@ -806,7 +826,7 @@ brewer.pal(5,"Set1")
 
 # Select color for each model type (An empty color is added to make the legend better)
 colorsNeeded <- tibble(Model = c('Binned GLM', 'GBM', 'NN', '', 'CANN GLM fixed', 'CANN GLM flex', 'CANN GBM fixed', 'CANN GBM flex')) %>% 
-   bind_cols(Color = c("#E41A1C", "#377EB8", "#4DAF4A", '#FFFFFF', "#984EA3", "#984EA3", "#FF7F00","#FF7F00")) %>% 
+  bind_cols(Color = c("#E41A1C", "#377EB8", "#4DAF4A", '#FFFFFF', "#984EA3", "#984EA3", "#FF7F00","#FF7F00")) %>% 
   bind_cols(LineType = c(1,1,1,1,1,2,1,2))
 
 # Add color to the OOS table and add linetype for different CANN models
@@ -883,12 +903,12 @@ allplotslist <- align_plots(all_OOS_plots$AUS_Freq + theme(legend.position = "no
 
 # Make a grid of all plots, with country names
 allplotsgrid <- plot_grid(#ggdraw() + draw_label(''),ggdraw() + draw_label("Out-of-sample Poisson Deviance", size = 12),ggdraw() + draw_label("Out-of-sample gamma Deviance", size = 12),
-                          ggdraw() + draw_label("Australian Data", angle = 90, size = 12),allplotslist[[1]], allplotslist[[2]],
-                          ggdraw() + draw_label("Belgian Data", angle = 90, size = 12),allplotslist[[3]], allplotslist[[4]],
-                          ggdraw() + draw_label("French Data", angle = 90, size = 12),allplotslist[[5]], allplotslist[[6]],
-                          ggdraw() + draw_label("Norwegian Data", angle = 90, size = 12),allplotslist[[7]], allplotslist[[8]],
-                          ncol = 3, rel_widths = c(0.05,0.47,0.47)#, rel_heights = c(0.05,0.24,0.24,0.24,0.24)
-                          )
+  ggdraw() + draw_label("Australian Data", angle = 90, size = 12),allplotslist[[1]], allplotslist[[2]],
+  ggdraw() + draw_label("Belgian Data", angle = 90, size = 12),allplotslist[[3]], allplotslist[[4]],
+  ggdraw() + draw_label("French Data", angle = 90, size = 12),allplotslist[[5]], allplotslist[[6]],
+  ggdraw() + draw_label("Norwegian Data", angle = 90, size = 12),allplotslist[[7]], allplotslist[[8]],
+  ncol = 3, rel_widths = c(0.05,0.47,0.47)#, rel_heights = c(0.05,0.24,0.24,0.24,0.24)
+)
 
 # Final plot grid, with legend
 final_OOS_plot <- plot_grid(
