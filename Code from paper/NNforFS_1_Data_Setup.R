@@ -183,6 +183,7 @@ for(x in 1:6){
     select(!any_of("expo"))
 } 
 
+# These were preprocessed in the same way as the other data sets, but combining with the GBM or GLM models from Henckaerts et al. 2021
 NC_data_BE_GLM <- NC_all_testfolds_CANNglm
 
 ## ----- Freq data for CANN GBM -----
@@ -220,6 +221,7 @@ for(x in 1:6){
     select(!any_of("expo"))
 } 
 
+# These were preprocessed in the same way as the other data sets, but combining with the GBM or GLM models from Henckaerts et al. 2021
 NC_data_BE_GBM <- NC_all_testfolds_CANNgbm
 
 save(NC_data_AUS, NC_data_BE, NC_data_FR, NC_data_NOR,
@@ -280,6 +282,7 @@ for(x in 1:6){
     select(!any_of("expo"))
 } 
 
+# These were preprocessed in the same way as the other data sets, but combining with the GBM or GLM models from Henckaerts et al. 2021
 CA_data_BE_GLM <- CA_all_testfolds_CANNglm
 
 ## ----- Sev data for CANN GBM -----
@@ -317,6 +320,7 @@ for(x in 1:6){
     select(!any_of("expo"))
 } 
 
+# These were preprocessed in the same way as the other data sets, but combining with the GBM or GLM models from Henckaerts et al. 2021
 CA_data_BE_GBM <- CA_all_testfolds_CANNgbm
 
 save(CA_data_AUS, CA_data_BE, CA_data_FR, CA_data_NOR,
