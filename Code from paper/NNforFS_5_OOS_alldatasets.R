@@ -7,10 +7,6 @@
 
 ## ----- Install packages needed -----
 
-#library(reticulate)
-#use_python("C:/Users/Frynn/.conda/envs/tf_noGpu/python")
-#reticulate::use_condaenv("my_env")
-
 used_packages <- c("sp", "vip","ggplot2",
                    "pdp","cplm","mltools",
                    "data.table", "keras", "tensorflow",
@@ -20,7 +16,7 @@ used_packages <- c("sp", "vip","ggplot2",
                    "fuzzyjoin", "colorspace", "sf",
                    "tmap", "rgdal","egg", 
                    "tcltk", "xtable","progress",
-                   "doParallel")
+                   "doParallel", "maidrr")
 suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -28,19 +24,12 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
   }
 }))
 
-#install.packages('devtools')
-#devtools::install_github('henckr/maidrr')
-#library("maidrr")
-
 ## ---- Setup Keras and Tensorflow -----
 
-# Running on local laptop PC
-tensorflow::use_condaenv( "tf_noGpu")
-conda_python(envname = "tf_noGpu")
-
-# Running on local Desktop PC
-#tensorflow::use_condaenv( "my_env")
-#conda_python(envname = "my_env")
+# Point R to the appropriate instalation of Conda and Tensorflow
+# use_python(---pythonlocation---)
+# use_condaenv(---condalocation---)
+# install_tensorflow(method = "conda", conda = ---condalocation---)
 
 # Disable graphical plot of model training (to much memory, can cause crash)
 options(keras.view_metrics = FALSE)
@@ -51,14 +40,7 @@ options(pillar.sigfig = 5)
 
 ## ----- Read in Data -----
 
-# Data files input and results from Henckaerts et al. 2019
-#setwd("~/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd("C:/Users/u0086713/Dropbox/Freek research project/Code Freek/Code_FH")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Location of the extra data files
-location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-#location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
 
 # Read in Functions File
 source("Functions.R")
