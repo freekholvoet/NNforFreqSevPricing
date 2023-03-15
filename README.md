@@ -1,6 +1,6 @@
 # Neural networks for insurance pricing with frequency and severity data
 
-This repository accompanies the paper: Neural networks for insurance pricing with frequency and severity data: a benchmark study from data preprocessing steps to technical tariff, written by Freek Holvoet, Katrien Antonio and Roel Henckaerts from the KU Leuven.
+This repository accompanies the paper: *Neural networks for insurance pricing with frequency and severity data: a benchmark study from data preprocessing steps to technical tariff*, written by Freek Holvoet, Katrien Antonio and Roel Henckaerts from the KU Leuven.
 
 The paper is available on Arxiv via: www.arxiv.com
 
