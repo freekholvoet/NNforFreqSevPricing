@@ -7,10 +7,6 @@
 
 ## ----- Install packages needed -----
 
-#library(reticulate)
-#use_python("C:/Users/Frynn/.conda/envs/tf_noGpu/python")
-#reticulate::use_condaenv("my_env")
-
 used_packages <- c("data.table", "tidyverse",
                    "doParallel","pbapply", "gam", "evtree")
 suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
@@ -23,56 +19,14 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
 ## ----- Read in data -----
 
 # Data files input and results from Henckaerts et al. 2019
-setwd("~/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd("C:/Users/u0086713/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # Location of the extra data files
-#location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
+location_datasets <- "./Data"
 
-# Australian data set
-data_AUS <- readRDS(paste0(location_datasets,"/ausprivauto/data.rds")) %>% 
-  as_tibble %>% 
-  mutate(fold_nr = ((row_number() - 1) %% 6) + 1)
-cat_AUS <- c("VehAge", "VehBody", "Gender", "DrivAge")
-feat_AUS <- c("VehValue","VehAge", "VehBody", "Gender", "DrivAge")
-
-# French data set
-data_FR <- readRDS(paste0(location_datasets,"/fremtpl2/data.rds")) %>% 
-  as_tibble %>% 
-  mutate(fold_nr = ((row_number() - 1) %% 6) + 1) %>% 
-  mutate(Density = log(Density)) %>% 
-  mutate(DrivAge = case_when(
-    DrivAge < 21 ~ 1,
-    21 <= DrivAge & DrivAge < 26 ~ 2,
-    26 <= DrivAge & DrivAge < 30 ~ 3,
-    30 <= DrivAge & DrivAge < 40 ~ 4,
-    40 <= DrivAge & DrivAge < 50 ~ 5,
-    50 <= DrivAge & DrivAge < 70 ~ 6,
-    70 <= DrivAge ~ 7,
-    TRUE ~ 7
-  )) %>% 
-  mutate(VehAge = case_when(
-    VehAge == 0 ~ 1,
-    0 < VehAge & VehAge < 11 ~ 2,
-    11 <= VehAge ~ 3,
-    TRUE ~ 3
-  )) %>% 
-  mutate(VehAge = factor(VehAge),DrivAge=factor(DrivAge)) %>% 
-  group_by(across(c(-average)), .add = FALSE) %>% # We need to group, as this data set contains one line per claim
-  summarise(average = mean(average))  %>% 
-  filter(row_number()==1) %>% # With filter on row_number we only keep track of one line per group, which is what we need
-  ungroup
-cat_FR <- c("Area","VehPower","VehBrand","Region", "VehGas", "VehAge", "DrivAge")
-feat_FR <- c("VehPower", "VehAge", "DrivAge", "BonusMalus", "VehBrand", "VehGas", "Area", "Density", "Region")
-
-# Norwegian data set
-data_NOR <- readRDS(paste0(location_datasets,"/norauto/data.rds")) %>% 
-  as_tibble %>% 
-  mutate(fold_nr = ((row_number() - 1) %% 6) + 1)
-cat_NOR <- c("Male","Young","DistLimit","GeoRegion")
-feat_NOR <- c("Male", "Young", "DistLimit", "GeoRegion")
+load("data_AUS_prepared.RData")
+load("data_FR_prepared.RData")
+load("data_NOR_prepared.RData")
 
 ## ----- Prediction en loss functions -----
 
