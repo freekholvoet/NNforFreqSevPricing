@@ -5,10 +5,6 @@
 
 # ----- Install packages needed -----
 
-#library(reticulate)
-#use_python("C:/Users/Frynn/.conda/envs/tf_noGpu/python")
-#reticulate::use_condaenv("my_env")
-
 used_packages <- c('tidyverse')
 suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {
@@ -21,9 +17,7 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-# Location of the extra data files
-location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-#location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
+location_datasets <- "./Data"
 
 # Read in Functions File
 source("Functions.R")
@@ -31,7 +25,7 @@ source("Functions.R")
 ## ----- Australian -----
 
 # Australian data set
-data_AUS <- readRDS(paste0(location_datasets,"/ausprivauto/data.rds")) %>% 
+data_AUS <- readRDS(paste0(location_datasets,"/AustralianData/data.rds")) %>% 
   as_tibble %>% 
   mutate(fold_nr = ((row_number() - 1) %% 6) + 1)
 cat_AUS <- c("VehAge", "VehBody", "Gender", "DrivAge")
@@ -40,7 +34,7 @@ feat_AUS <- c("VehValue","VehAge", "VehBody", "Gender", "DrivAge")
 ## ----- Belgian -----
 
 # Belgian Data
-data_readin<-readRDS("./Data/Data.rds") #Dataset
+data_readin<-readRDS(paste0(location_datasets,"/BelgianData/Data.rds")) #Dataset
 data_BE <- data_readin %>%
   as_tibble() %>%
   mutate(fold_nr = as.numeric(substring(fold,5))) %>%
@@ -52,7 +46,7 @@ feat_BE <- c("ageph","bm","agec","power","long","lat","coverage","fuel","sex","u
 ## ----- French -----
 
 # French data set
-data_FR <- readRDS(paste0(location_datasets,"/fremtpl2/data.rds")) %>% 
+data_FR <- readRDS(paste0(location_datasets,"/FrenchData/data.rds")) %>% 
   as_tibble %>% 
   mutate(fold_nr = ((row_number() - 1) %% 6) + 1) %>% 
   mutate(Density = log(Density)) %>% 
@@ -83,7 +77,7 @@ feat_FR <- c("VehPower", "VehAge", "DrivAge", "BonusMalus", "VehBrand", "VehGas"
 ## ----- Norwegian -----
 
 # Norwegian data set
-data_NOR <- readRDS(paste0(location_datasets,"/norauto/data.rds")) %>% 
+data_NOR <- readRDS(paste0(location_datasets,"/NorwegianData/data.rds")) %>% 
   as_tibble %>% 
   mutate(fold_nr = ((row_number() - 1) %% 6) + 1)
 cat_NOR <- c("Male","Young","DistLimit","GeoRegion")
@@ -119,9 +113,9 @@ load('oos_sev_GBM_FR')
 load('oos_freq_GBM_NOR')
 load('oos_sev_GBM_NOR')
 
-# Read in GLM and GBM data for BE
+# Read in GLM and GBM data for BE (NOT INCLUDED IN THE GITHUB REPO)
 glm_data<-readRDS("./Data/data_glm.rds") #Data used in glm model
-gbm_fits<-readRDS("./Data/mfits_gbm.rds") #Gbm's as constructed in Henckaerts et al. (2019)
+gbm_fits<-readRDS("./Data/mfits_gbm.rds") #Gbm's as constructed in Henckaerts et al. (2021)
 glm_fits<-readRDS("./Data/mfits_glm.rds") #Glm's as constructed in Henckaerts et al. (2019)
 gbm_fits <- gbm_fits[c(1:6,13:18)] # We do not use the log_normal GBM fits
 
