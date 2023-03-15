@@ -7,10 +7,6 @@
 
 ## ----- Install packages needed -----
 
-#library(reticulate)
-#use_python("C:/Users/Frynn/.conda/envs/tf_noGpu/python")
-#reticulate::use_condaenv("my_env")
-
 # Make sure the installation of the GBM package is the one from Harry Southworth which includes Gamma deviance for GBM
 #devtools::install_github("harrysouthworth/gbm")
 
@@ -33,13 +29,7 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
 ## ----- Read in data -----
 
 # Data files input and results from Henckaerts et al. 2019
-#setwd("~/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd("C:/Users/u0086713/Dropbox/Freek research project/Code Freek/Code_FH")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Location of the extra data files
-location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-#location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
 
 # Read in Functions File
 source("Functions.R")
