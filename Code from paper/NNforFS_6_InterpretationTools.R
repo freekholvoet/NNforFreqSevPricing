@@ -30,15 +30,10 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
 
 ## ----- Setup Keras and Tensorflow -----
 
-# Laptop enviroment
-# use_python("C:/Users/u0086713/AppData/Local/r-miniconda/python.exe")
-# use_condaenv("C:/Users/u0086713/AppData/Local/r-miniconda")
-# install_tensorflow(method = "conda", conda = "C:/Users/u0086713/AppData/Local/r-miniconda/Scripts/conda.exe")
-
-# Desktop enviroment
- use_python("C:/Users/Frynn/AppData/Local/r-miniconda/python.exe")
- use_condaenv("C:/Users/Frynn/AppData/Local/r-miniconda")
-# install_tensorflow(method = "conda", conda = "C:/Users/Frynn/AppData/Local/r-miniconda/Scripts/conda.exe")
+# Point R to the appropriate instalation of Conda and Tensorflow
+# use_python(---pythonlocation---)
+# use_condaenv(---condalocation---)
+# install_tensorflow(method = "conda", conda = ---condalocation---)
 
 # Disable graphical plot of model training (to much memory, can cause crash)
 options(keras.view_metrics = FALSE)
@@ -49,14 +44,7 @@ options(pillar.sigfig = 5)
 
 ## ----- Read in Data -----
 
-# Data files input and results from Henckaerts et al. 2019
-#setwd("~/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd("C:/Users/u0086713/Dropbox/Freek research project/Code Freek/Code_FH")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Location of the extra data files
-#location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-#location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
 
 # Read in Functions File
 source("Functions.R")
@@ -203,10 +191,6 @@ CA_opt_NOR <- lapply(1:6, function(fold){
                      trainable_output = TRUE,
                      output_modelinfo = TRUE)
 })
-
-
-sapply(c(1:6), function(x){NC_opt_FR[[x]]$results})
-sapply(c(1:6), function(x){CA_opt_FR[[x]]$results})
 
 # -----
 # ----- INTERPRETATION PREPERATION -----

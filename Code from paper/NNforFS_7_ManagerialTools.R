@@ -16,7 +16,8 @@ used_packages <- c("sp", "vip","ggplot2",
                    "fuzzyjoin", "colorspace", "sf",
                    "tmap", "rgdal","egg", 
                    "tcltk", "xtable","progress",
-                   "doParallel", "maidrr", "zoo", "evtree")
+                   "doParallel", "maidrr", "zoo", 
+                   "evtree", "ineq")
 suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -30,15 +31,10 @@ suppressMessages(packages <- lapply(used_packages, FUN = function(x) {
 
 ## ---- Setup Keras and Tensorflow -----
 
-# Laptop enviroment
-# use_python("C:/Users/u0086713/AppData/Local/r-miniconda/python.exe")
-# use_condaenv("C:/Users/u0086713/AppData/Local/r-miniconda")
-# install_tensorflow(method = "conda", conda = "C:/Users/u0086713/AppData/Local/r-miniconda/Scripts/conda.exe")
-
-# Desktop enviroment
-use_python("C:/Users/Frynn/AppData/Local/r-miniconda/python.exe")
-use_condaenv("C:/Users/Frynn/AppData/Local/r-miniconda")
-# install_tensorflow(method = "conda", conda = "C:/Users/Frynn/AppData/Local/r-miniconda/Scripts/conda.exe")
+# Point R to the appropriate instalation of Conda and Tensorflow
+# use_python(---pythonlocation---)
+# use_condaenv(---condalocation---)
+# install_tensorflow(method = "conda", conda = ---condalocation---)
 
 # Disable graphical plot of model training (to much memory, can cause crash)
 options(keras.view_metrics = FALSE)
@@ -49,14 +45,7 @@ options(pillar.sigfig = 5)
 
 ## ----- Read in Data -----
 
-# Data files input and results from Henckaerts et al. 2019
-#setwd("~/Dropbox/Freek research project/Code Freek/Code_FH")
-#setwd("C:/Users/u0086713/Dropbox/Freek research project/Code Freek/Code_FH")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Location of the extra data files
-#location_datasets <- "/home/lynn/Dropbox/MTPL Data Sets"
-#location_datasets <- "C:/Users/u0086713/Dropbox/MTPL Data Sets"
 
 # Read in Functions File
 source("Functions.R")
@@ -832,9 +821,6 @@ tariff_plan_AUS %>% group_by(fold_nr) %>%
          balance_surr = tariff_surr / obs_losses)
 
 ## ----- Lorenz Curves -----
-
-# install.packages('ineq')
-library(ineq)
 
 # To name list items in a lapply loop
 sn <- function(vector){
