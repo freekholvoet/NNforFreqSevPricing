@@ -526,6 +526,22 @@ data_test_PC <- data_test %>% left_join(data_readin %>% select(id,postcode), by 
 We are now ready to write our custom prediction function.
 
 ```{r pred_function, results='hide'}
+
+# A GBM prediction function which first adds the lat-long coordinates and then makes a GBM prediction.
+NC_gbm_prediction_perpoint <- function(object, newdata){
+  if(!is.null(object$latlong_conversion)){
+    newdata %>% left_join(object$latlong_conversion,by=c("postcode")) %>% 
+      predict_model.gbm(object$GBM_model, .) * newdata$expo
+  } else {
+    predict_model.gbm(object, newdata) * newdata$expo
+  }
+}
+
+NC_gbm_prediction <- function(object, newdata){
+  NC_gbm_prediction_perpoint(object, newdata) %>% mean
+}
+
+# A custom prediction function which returns the average prediction on the supplied newdata. Used for partial dependence plots
 custom_prediction <- function(object, newdata){
   
   # One-hot encode all categorical variables
@@ -541,16 +557,72 @@ custom_prediction <- function(object, newdata){
   train_cat_data_concat <- do.call('cbind',train_cat_data)
   
   # If a latlong conversion is supplied, apply it
-  cont_data_LL <- newdata %>% 
-    left_join(object$latlong_conversion,by=c("postcode"))
+  if(!is.null(object$latlong_conversion)){
+    cont_data_LL <- newdata %>% 
+      left_join(object$latlong_conversion,by=c("postcode"))
+  } else {
+    cont_data_LL <- newdata
+  }
   
   # Scale the continuous variables
-  cont_data <- cont_data_LL %>%
-    dplyr::select(object$cont_vars) %>%
-    scale_withPar(object$cont_vars, object$scale_info)
+  if(!is.null(object$scale_info)){
+    cont_data <- cont_data_LL %>%
+      dplyr::select(object$cont_vars) %>%
+      .GlobalEnv$scale_withPar(object$cont_vars, 
+                               object$scale_info %>% 
+                                 arrange(factor(Variable, levels = object$cont_vars)))
+  } else {
+    cont_data <- cont_data_LL %>% dplyr::select(c())
+  }
   
-  # Add the GBM predictions, offset based on whether it is frequency or severity model
-  new_prediction <- predict_model.gbm(object = object$GBM_model, newdata = cont_data_LL)* newdata$expo
+  # Add the GBM predictions
+  new_prediction <- .GlobalEnv$NC_gbm_prediction_perpoint(object = object$GBM_model, newdata = cont_data_LL)
+  
+  # Bind all data into a list of matrices
+  train_mat <- list(cont_data %>% data.matrix(),
+                    train_cat_data_concat,
+                    new_prediction %>% log %>% data.matrix())
+
+  # Make predictions on the data with the supplied CANN model
+  return(object$NN_model %>% predict(train_mat, type = "response", verbose = 0) %>% mean)
+}
+
+# A custom prediction function which returns a vector of predictions for each data point in the supplied newdata. Used for variable importance plots.
+custom_prediction_perpoint <- function(object, newdata){
+  
+  # One-hot encode all categorical variables
+  train_cat_data <- lapply(object$cat_vars,function(var_FH){
+    newdata %>% 
+      dplyr::pull(var_FH) %>% 
+      data.table::as.data.table() %>% 
+      mltools::one_hot(cols=".") %>% 
+      data.matrix()
+  })
+  
+  # Bind the one-hot variables into a matrix
+  train_cat_data_concat <- do.call('cbind',train_cat_data)
+  
+  # If a latlong conversion is supplied, apply it
+  if(!is.null(object$latlong_conversion)){
+    cont_data_LL <- newdata %>% 
+      left_join(object$latlong_conversion,by=c("postcode"))
+  } else {
+    cont_data_LL <- newdata
+  }
+  
+  # Scale the continuous variables
+  if(!is.null(object$scale_info)){
+    cont_data <- cont_data_LL %>%
+      dplyr::select(object$cont_vars) %>%
+      .GlobalEnv$scale_withPar(object$cont_vars, 
+                               object$scale_info %>% 
+                                 arrange(factor(Variable, levels = object$cont_vars)))
+  } else {
+    cont_data <- cont_data_LL %>% dplyr::select(c())
+  }
+  
+  # Add the GBM predictions
+  new_prediction <- .GlobalEnv$NC_gbm_prediction_perpoint(object = object$GBM_model, newdata = cont_data_LL)
   
   # Bind all data into a list of matrices
   train_mat <- list(cont_data %>% data.matrix(),
@@ -558,7 +630,7 @@ custom_prediction <- function(object, newdata){
                     new_prediction %>% log %>% data.matrix())
   
   # Make predictions on the data with the supplied CANN model
-  return(object$NN_model %>% predict(train_mat, type = "response", verbose = 0) %>% mean)
+  return(object$NN_model %>% predict(train_mat, type = "response", verbose = 0))
 }
 ```
 
@@ -575,32 +647,32 @@ model_object <- list(NN_model = model,
 
 ## Variable importance
 
-To calculate the importance of each variable relative to the models' predictions, we follow the permutational technique from @Olden2004. The technique consists at looking at the change in average prediction when we permutate a variable. 
+To calculate the importance of each variable relative to the models' predictions, we follow the permutational technique from @Olden2004. The technique consists at looking at the change in prediction when we permutate a variable. 
 
 We first make predictions on the original data set. 
 ```{r vip_step1, warning=FALSE}
 # We take a sample of the data, to run faster
 data_slice <- data_train_PC %>% slice_sample(n=10000)
 
-average_prediction <- custom_prediction(model_object, data_slice) %>% mean
+baseline_prediction <- custom_prediction_perpoint(model_object, data_slice)
 
-print(average_prediction)
+print(baseline_prediction %>% mean())
 ```
 
-So the average predicted number of claims on our data sample is `r round(average_prediction, digits= 4)`. We can now permutate each variable and look at the difference in average prediction.
+So the average predicted number of claims on our data sample is `r round(baseline_prediction %>% mean(), digits= 4)`. We now permuted each variable and look at the difference in prediction when compared to the baseline prediction.
 
 ```{r vip_step2, results='hide'}
 # For each variable, permutate and predict
 VI <- lapply(c("coverage", "fuel", "sex", "use", "fleet", "ageph", "bm", "agec", "power", "postcode"), function(var){
   
-  # Permutate the variable
+  # Permute the variable
   permutated_data <- data_slice %>% mutate(!!var := (slice_sample(., n=nrow(.)) %>% pull(var)))
   
-  # Make the preduction
-  mut_prediction <- custom_prediction(model_object, permutated_data)
+  # Make the prediction
+  mut_prediction <- custom_prediction_perpoint(model_object, permutated_data)
   
-  # Calculate the difference with the unmutated predictions
-  tibble(Variable = var, VI =  sum(abs(average_prediction - mut_prediction)))
+  # Calculate the difference with the non-permuted predictions
+  tibble(Variable = var, VI =  sum(abs(baseline_prediction - mut_prediction)))
   
 }) %>% do.call(rbind,.) %>% mutate(scaled_VI = VI / sum(VI))
 ```
@@ -676,12 +748,19 @@ ncol = 2)
 
 # Global surrogate model
 
-We use the surrogate technique from @Henckaerts2022 to relate the partial dependency effects learned from the neural networks back into a GLM. The Maidrr function autotune is used to tune the dynamic programming. Tuning and fitting the surrogate GLM is quite computationally expensive. We show the code used here, but instead of running that code, we read in the already tuned and fitted results.
+We use the surrogate technique from @Henckaerts2022 to relate the partial dependency effects learned from the neural networks back into a GLM. The variable coverage in the Belgian data set is ordered, so we apply the order in the R data set.
+
+```{r  surr_data, warning = FALSE, results='hide'}
+ # We make the variable coverage an ordered categorical variables
+ data_train_PC_ord <- data_train_PC %>% mutate(coverage = factor(coverage, ordered = T))
+```
+
+The Maidrr function autotune is used to tune the dynamic programming. Tuning and fitting the surrogate GLM is quite computationally expensive. We show the code used here, but instead of running that code, we read in the already tuned and fitted results.
 
 ```{r eval=FALSE}
 # Tune and fit the surrogate GLM
 NC_Surrogate_CANN_GBM_flex_BE <- maidrr::autotune(model_object,
-                                    data = data_train_PC,
+                                    data = data_train_PC_ord,
                                     vars = c("coverage", "fuel", "sex", "use", "fleet",
                                              "ageph", "bm", "agec", "power", "postcode"),
                                     target = 'nclaims',
@@ -699,41 +778,48 @@ NC_Surrogate_CANN_GBM_flex_BE <- maidrr::autotune(model_object,
 ```
 
 
-We read in the results of the code above.
+We read in the already fitted surrogate model. In the paper, we used six different test sets, so here we select the model using data set one as test set.
 
 ```{r surr_readin}
 # Read in already fitted surrogate model
-load('NC_Surrogate_CANN_GBM_flex_BE')
+load('NC_CANN_GBM_flex_SURR_allFolds_BE')
+surrogate_example <- NC_CANN_GBM_flex_SURR_allFolds_BE[[1]]
 ```
 
 We take a look at the results. First item is the number of splits for each variable. We can also see here which cross effects between variables were seen as significant by the surrogate fitting.
 
 ```{r surr_look1}
-NC_Surrogate_CANN_GBM_flex_BE$slct_feat
+surrogate_example$slct_feat
 ```
 Second is the fitted GLM with the optimal splits. We can also see here where the splitting points are.
 
 ```{r surr_look2}
-NC_Surrogate_CANN_GBM_flex_BE$best_surr
+surrogate_example$best_surr
 ```
 
 From the optimal GLM, we can also read in the segmented data. 
 
 ```{r surr_look3}
-NC_Surrogate_CANN_GBM_flex_BE$best_surr$data %>% select(c(ends_with("_"),'expo', 'nclaims')) %>% head()
+surrogate_example$best_surr$data %>% select(c(ends_with("_"),'expo', 'nclaims')) %>% head()
 ```
+
+
 
 We want to look at the out-of-sample perforamance of our surrogate GLM. We can do this by using the tuned data segmentation on our test set. 
 
 ```{r oos_surr}
+
+ # We make the variable coverage an ordered categorical variables
+ data_test_PC_ord <- data_test_PC %>% mutate(coverage = factor(coverage, ordered = T))
+
 # We use the Maidrr segmentation function to apply our segmentation to the test data.
-data_test_segm <- segmentation(fx_vars = NC_Surrogate_CANN_GBM_flex_BE$pd_fx[names(NC_Surrogate_CANN_GBM_flex_BE$slct_feat)], 
-                               data = data_test_PC , 
+data_test_segm <- segmentation(fx_vars = surrogate_example$pd_fx[names(surrogate_example$slct_feat)], 
+                               data = data_test_PC_ord , 
                                type = 'ngroups', 
-                               values = NC_Surrogate_CANN_GBM_flex_BE$slct_feat)
+                               values = surrogate_example$slct_feat)
 
 # Make predictions on the segmented test set with the surrogate GLM
-test_predictions <- predict(NC_Surrogate_CANN_GBM_flex_BE$best_surr, 
+test_predictions <- predict(surrogate_example$best_surr, 
                   data_test_segm %>% select(c(ends_with("_"),'expo', 'nclaims')), 
                   type = 'response')
 
